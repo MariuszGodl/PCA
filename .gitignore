@@ -1,0 +1,8 @@
+#Rozszerzenia do zignorowania
+*.log
+*.gz
+*.aux
+*.out
+*.nav
+*.snm
+*.toc
