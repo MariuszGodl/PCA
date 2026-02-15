@@ -1,0 +1,116 @@
+\documentclass{beamer}
+\usetheme{Boadilla}
+
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{polski}
+
+\title{Principal Component Analysis - PCA}
+
+\begin{document}
+	\begin{frame}
+		\titlepage
+	\end{frame}
+	\begin{frame}
+		Na początku zdefiniujemy, jak wyglądają nasze dane. Wektory $X_i$, o wymiarach $d\times 1$, reprezentują obserwacje o d cechach. Natomiast $\mathbb{X}$ ($n\times d$) jest tablicą składającą się z transponowanych wektorów $X_i$.
+		\vspace{10mm}
+		\begin{equation*}
+			X_i = \begin{bmatrix}
+				x_1\\
+				x_2\\
+				\vdots\\
+				x_d
+			\end{bmatrix}\quad\quad
+			\mathbb{X} = \begin{bmatrix}
+				\text{---} & X_1^T & \text{---}\\
+				\text{---} &X_2^T& \text{---}\\ \
+				&\vdots&\\
+				\text{---} &X_n^T& \text{---}
+			\end{bmatrix}
+		\end{equation*}
+	\end{frame}
+	
+	\begin{frame}
+		\begin{figure}
+			\centerline{\includegraphics[width=0.7\textwidth]{img/pca_vectors_2d.png}}
+			\vspace{30mm}
+		\end{figure}
+	\end{frame}
+	
+	\begin{frame}
+		\begin{figure}
+			\centerline{\includegraphics[width=0.6\textwidth]{img/PCArzut.png}}
+			\vspace{-15mm}
+		\end{figure}
+		
+		\begin{equation*}
+			||w|| = 1
+		\end{equation*}
+		\begin{equation*}
+			z_i = \langle X_i, w\rangle = X_i^T w
+		\end{equation*}
+	\end{frame}
+	
+	\begin{frame}
+		
+		Naszym zadaniem będzie znalezienie takiego wektora $w$, który zmaksymalizuje wariancję, gdy rzutujemy na niego punkty $X_i$. Przy tym założymy, że dane są znormalizowane (wszystkie cechy mieszczą się w przedziale $[0,1]$) i mają średnią $\mu = 0$.
+	\end{frame}
+	
+	\begin{frame}
+		\begin{equation*}
+			\text{wariancja}= \sigma^2 = \frac{1}{n}\sum_{i=1}^{n}(z_i)^2 = \frac{1}{n}\sum_{i=1}^{n}(X_i^T w)^2 = \frac{1}{n} (\mathbb{X}w)^T\mathbb{X}w 
+		\end{equation*}
+		\begin{equation*}
+			= w^T\left( \frac{1}{n} \mathbb{X}^T \mathbb{X} \right) w = w^T S {}w
+			\vspace{2.5mm}
+		\end{equation*}
+		
+		$S$ jest macierzą kowariancji. Jest ona symetryczna, dlatego
+		
+		\begin{equation*}
+			v_1\perp v_2 \perp \ldots \perp v_d, \quad \quad ||v_i|| = 1
+		\end{equation*}
+		\begin{equation*}
+			\lambda_1 \geq \lambda_2 \geq \ldots \geq \lambda_d, \quad\quad \lambda_i \in \mathbb{R}
+		\end{equation*}
+		
+		Gdzie $v_i$ są wektorami własnymi $S$, a $\lambda_i$ odpowiadającymi im wartościami własnymi.
+	\end{frame}
+
+	\begin{frame}
+		Wektory $v_i$ tworzą przestrzeń ortonormalną, dlatego możemy zapisać wektor $w$ jako kombinację liniową:
+		\begin{equation*}
+			w = \sum_{i=1}^{d}c_i v_i
+		\end{equation*}
+		Korzystając z warunku długości wektora $w$, możemy ograniczyć wartości współczynników $c_i$
+		\begin{equation*}
+			||w|| = 1 \implies \left( \sum_{i=1}^{d}c_i v_i\right)^T \sum_{i=1}^{d}c_i v_i = 1 \implies \sum_{i=1}^{d}c_i^2 = 1
+		\end{equation*}
+	\end{frame}
+	
+	\begin{frame}
+		Podstawiamy nowy wzór na $w$, pamiętając, że wektory własne spełniają równanie $S{}v = \lambda{}v$.
+		\begin{equation*}
+			S{}w = S\left( \sum_{i=1}^{d}c_i v_i\right)  =  \sum_{i=1}^{d}\lambda_i c_i v_i
+		\end{equation*}
+		\begin{equation*}
+			w^T S{}w = \left( \sum_{i=1}^{d}c_i v_i\right)^T \left( \sum_{i=1}^{d}\lambda_i c_i v_i\right) = \sum_{i=1}^{d}\lambda_i c_i^2
+		\end{equation*}
+		Co daje nam nowy wzór na wariancję:
+		\begin{equation*}
+			\sigma^2 = \sum_{i=1}^{d}\lambda_i c_i^2
+		\end{equation*}
+	\end{frame}
+	
+	\begin{frame}
+		Przypomnijmy sobie, że naszym celem jest znalezienie takiego wektora $w$, który zmaksymalizuje wariancję, dlatego
+		\begin{equation*}
+			\sup\sigma^2 = \sup_{c_i} \sum_{i=1}^{d}\lambda_i c_i^2 = \max \{ \lambda_i;\quad i\in\{1, 2, \ldots, d\} \}
+		\end{equation*}
+		Z tego wynika, że   $c_i = 1 $, gdy  $\lambda_i = \max\{\lambda\}$, w przeciwny razie $c_i = 0$.\vspace{2.5mm}
+		Dzięki temu, wnioskujemy, że wektor $w$ maksymalizujący wariancję, jest wektorem własnym macierzy $S$, odpowiadającym największej wartości własnej.
+		\begin{equation*}
+			w = v_1 \quad\text{ oraz }\quad \sigma^2=\lambda_1
+		\end{equation*}
+	\end{frame}
+\end{document}
