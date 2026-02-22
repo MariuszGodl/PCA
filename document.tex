@@ -5,13 +5,17 @@
 \usepackage{graphicx}
 \usepackage{polski}
 
+\DeclareMathOperator{\cov}{cov}
+
 \title{Principal Component Analysis - PCA}
+\author{Mariusz Godlewski, Piotr Kędzierski}
 
 \begin{document}
 	\begin{frame}
 		\titlepage
 	\end{frame}
-	\begin{frame}
+	
+	\begin{frame}{Konstrunkcja Macierzy Danych}
 		Na początku zdefiniujemy, jak wyglądają nasze dane. Wektory $X_i$, o wymiarach $d\times 1$, reprezentują obserwacje o d cechach. Natomiast $\mathbb{X}$ ($n\times d$) jest tablicą składającą się z transponowanych wektorów $X_i$.
 		\vspace{10mm}
 		\begin{equation*}
@@ -28,16 +32,17 @@
 				\text{---} &X_n^T& \text{---}
 			\end{bmatrix}
 		\end{equation*}
+		
 	\end{frame}
 	
-	\begin{frame}
+	\begin{frame}{Wizulalizacja głównych składowych w 2D}
 		\begin{figure}
 			\centerline{\includegraphics[width=0.7\textwidth]{img/pca_vectors_2d.png}}
 			\vspace{30mm}
 		\end{figure}
 	\end{frame}
 	
-	\begin{frame}
+	\begin{frame}{Rzut prostokątny}
 		\begin{figure}
 			\centerline{\includegraphics[width=0.6\textwidth]{img/PCArzut.png}}
 			\vspace{-15mm}
@@ -51,12 +56,42 @@
 		\end{equation*}
 	\end{frame}
 	
-	\begin{frame}
-		
-		Naszym zadaniem będzie znalezienie takiego wektora $w$, który zmaksymalizuje wariancję, gdy rzutujemy na niego punkty $X_i$. Przy tym założymy, że dane są znormalizowane (wszystkie cechy mieszczą się w przedziale $[0,1]$) i mają średnią $\mu = 0$.
+	\begin{frame}{Konstrukcja macierzy kowariancji 1}
+		\begin{equation*}
+			\text{Wzór na kowariancję: } \cov(X, Y) = \frac{1}{n} \sum_{i=1}^{n}(x_i - \bar{x})(y_i - \bar{y})
+		\end{equation*}
+		W dalszej części zakładamy, że zmienne są wyśrodkowane względem swoich średnich ($\bar{x} = \bar{y} = 0$).
+		Wtedy w naszej macierzy $\mathbb{X}$, kowariancję j-tej i k-tej zmiennej możemy zapisać w postaci
+		\begin{equation*}
+			\cov(j ,k) = \frac{1}{n} \sum_{i=0}^{n} x_{ij}x_{ik}
+		\end{equation*}
+		Gdzie elemnt $x_{ij}$ jest i-tą obserwacją j-tej zmiennej
 	\end{frame}
 	
-	\begin{frame}
+	\begin{frame}{Konstrukcja macierzy kowariancji 2}
+		Przyjrzyjmy się teraz macierzy
+		\begin{equation*}
+			M = \mathbb{X}^T \mathbb{X}
+		\end{equation*}
+		a konkretnie elementowi znajdującemu się w j-tym wierszu i k-tej kolumnie, który oznaczymy jako $M_{jk}$. Ze wzoru na mnożenie macierzy wiemy, że jest to iloczyn skalarny k-tej kolumny $\mathbb{X}$ oraz j-tego wiersza $\mathbb{X}^T$, czyli j-tej kolumny $\mathbb{X}$. Dzięki temu otrzymujemy
+		\begin{equation*}
+			M_{jk} = x_{1j}x_{1k} + x_{2j}x_{2k} + \cdots + x_{nj}x_{nk} = \sum_{i=0}^{n} x_{ij}x_{ik} = n\cov(j, k)
+		\end{equation*}
+		Łatwo wtedy zauważyć, że macierz kowariancji $S$, to
+		\begin{equation*}
+			S = \frac{1}{n} M = \frac{1}{n} \mathbb{X}^T \mathbb{X}
+		\end{equation*}
+		
+	\end{frame}
+	
+	\begin{frame}{Nasz Cel}
+		
+		Naszym zadaniem będzie znalezienie takiego wektora $w$, który zmaksymalizuje wariancję, gdy rzutujemy na niego punkty $X_i$. Przy tym założymy, że dane są znormalizowane (wszystkie cechy mieszczą się w przedziale $[0,1]$) i mają średnią $\bar{X_i} = 0$.\vspace{20pt}
+		
+		Dodatkowo, ustalimy długość wektora $||w|| = 1$, żeby ona sama w sobie nie wpływała na otrzymywaną wariancję.
+	\end{frame}
+	
+	\begin{frame}{Obliczanie Wariancji 1}
 		\begin{equation*}
 			\text{wariancja}= \sigma^2 = \frac{1}{n}\sum_{i=1}^{n}(z_i)^2 = \frac{1}{n}\sum_{i=1}^{n}(X_i^T w)^2 = \frac{1}{n} (\mathbb{X}w)^T\mathbb{X}w 
 		\end{equation*}
@@ -77,7 +112,7 @@
 		Gdzie $v_i$ są wektorami własnymi $S$, a $\lambda_i$ odpowiadającymi im wartościami własnymi.
 	\end{frame}
 
-	\begin{frame}
+	\begin{frame}{Obliczanie Wariancji 2}
 		Wektory $v_i$ tworzą przestrzeń ortonormalną, dlatego możemy zapisać wektor $w$ jako kombinację liniową:
 		\begin{equation*}
 			w = \sum_{i=1}^{d}c_i v_i
@@ -88,7 +123,7 @@
 		\end{equation*}
 	\end{frame}
 	
-	\begin{frame}
+	\begin{frame}{Obliczanie Wariancji 3}
 		Podstawiamy nowy wzór na $w$, pamiętając, że wektory własne spełniają równanie $S{}v = \lambda{}v$.
 		\begin{equation*}
 			S{}w = S\left( \sum_{i=1}^{d}c_i v_i\right)  =  \sum_{i=1}^{d}\lambda_i c_i v_i
@@ -102,7 +137,7 @@
 		\end{equation*}
 	\end{frame}
 	
-	\begin{frame}
+	\begin{frame}{Maksymalizacja Wariancji}
 		Przypomnijmy sobie, że naszym celem jest znalezienie takiego wektora $w$, który zmaksymalizuje wariancję, dlatego
 		\begin{equation*}
 			\sup\sigma^2 = \sup_{c_i} \sum_{i=1}^{d}\lambda_i c_i^2 = \max \{ \lambda_i;\quad i\in\{1, 2, \ldots, d\} \}
