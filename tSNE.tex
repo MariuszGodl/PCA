@@ -1,0 +1,201 @@
+\documentclass{beamer}
+
+\usetheme{Warsaw}
+
+\usepackage{polski}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{physics}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage[vlined]{algorithm2e}
+
+\DeclareMathOperator{\const}{const.}
+
+
+
+
+\begin{document}
+	\begin{frame}{Cel}
+		Postaramy się zredukować wielowymiarowy zbiór $\mathcal{X} = \{x_1, x_2, \ldots x_n\}$, do $\mathcal{Y} = \{y_1, y_2, \ldots y_n\}$
+		\begin{figure}[htbp]
+			\centering
+			\begin{subfigure}{0.45\textwidth}
+				\centering
+				\includegraphics[width=\textwidth]{./img/MNIST}
+				%\caption{Caption for the left image}
+				%\label{fig:left_img}
+			\end{subfigure}
+			\hfill
+			\begin{subfigure}{0.5\textwidth}
+				\centering
+				\includegraphics[width=\textwidth]{./img/TSNEembedding}
+				%\caption{Caption for the right image}
+				%\label{fig:right_img}
+			\end{subfigure}
+			
+			\caption{Projekcja zbioru MNIST na dwa wymiary}
+			\label{fig:both_imgs}
+		\end{figure}
+	\end{frame}
+	
+	\begin{frame}{Prawdopodobieństwa Warunkowe}
+		t-SNE -- \emph{t-Distributed Stochastic Neighbor Embedding}, jest metodą redukcji wymiarów danych. Działa ona, przez zamienienie odległości na prawdopodobieństwa warunkowe, określające stopień podobieństwa dwóch punktów, a następnie przeniesienie tego rozkłady do $k<n$ wymiarów.
+		
+		
+		\begin{definition}{Prawdopodobieństwo $p_{j|i}$ ($x_i$ wybierający punkt $x_j$ jako sąsiada}
+			\begin{equation*}
+				p_{j|i} = \frac{\exp(-\|x_i - x_j\|^2 / 2\sigma_i^2)}{\sum_{k\neq i} \exp(-\|x_i - x_k\|^2 / 2\sigma_i^2)}
+			\end{equation*}
+			
+			Ustalamy $\forall_{i}\quad p_{i|i} = 0$.
+		\end{definition}
+		
+	\end{frame}
+	
+	\begin{frame}{Symetria}
+		Ponieważ $\sigma_i$ jest różna dla każdego punktu, $p_{j|i} \neq p_{i|j}$. Żeby uzyskać symetrię definiujemy 
+		
+		\begin{definition}[Łączony Rozkład Prawdopodobieństwa]
+			\begin{equation*}
+				p_{ij} = p_{ji} = \frac{p_{i|j} + p_{j|i}}{2n}
+			\end{equation*}
+		\end{definition}
+		Główną zaletą symetrycznego rozkładu jest prosta forma gradientu funkcji.
+	\end{frame}
+	
+	\begin{frame}{Rozkład w Niskowymiarowej Przestrzeni}
+		W zredukowanej przestrzeni, będziemy korzystać z \emph{rozkładu t-studenta}, aby rozwiązać problem kongregacji punktów.
+		
+		\begin{definition}
+			\begin{equation*}
+				q_{ij} = \frac{(1 + \|y_i - y_j\|^2)^{-1}}{\sum_{k\neq l} (1 + \|y_k - y_l\|^2)^{-1}}
+			\end{equation*}
+			Oraz ponownie $\forall_{i}\quad q_{ii} = 0$.
+		\end{definition}
+		
+		Warto zauważyć, że ponieważ $Q$ i $P$ są rozkładami, to $\sum_{i, j} p_{ij} = \sum_{i, j} q_{ij} = 1$.
+		
+	\end{frame}
+	
+	\begin{frame}{Rozkład w Niskowymiarowej Przestrzeni}
+		\begin{center}
+			\includegraphics[width=\linewidth]{./img/gaussVStstudent}
+		\end{center}
+	\end{frame}
+	
+	\begin{frame}{Czym jest $\sigma_i$?}
+		Wariancja $\sigma_i^2 $, zależy od podanej wartości 
+		(Perp -- perplexity to parametr i dla każdego $x_i$ szukamy takiej $\sigma_i$, żeby)
+		
+		\begin{equation*}
+			Perp(P_i) = 2^{H(P_i)}
+		\end{equation*}
+		
+		\begin{definition}[Entropia Shannona]
+			\begin{equation*}
+				H(P_i) = -\sum_{j} p_{j|i} \log_2(p_{j|i})
+			\end{equation*}
+		\end{definition}
+		
+		Perplexity -- parametr. Można go (luźno) interpretować jako liczbę ,,ważnych'' sąsiadów.
+	\end{frame}
+	
+	\begin{frame}{Mierzenie Podobieństwa Rozkładów}
+		\begin{definition}[Rozbieżność Kullbacka-Leiblera]
+			Jest to metoda mierzenie rozbieżności dwóch rozkładów prawdopodobieństwa
+			\begin{equation*}
+				KL(P||Q) = \sum_{i}\sum_{j} p_{ij} \log(\frac{p_{ij}}{q_{ij}}).
+			\end{equation*}
+		\end{definition}
+		Będziemy ją traktować jak \emph{funkcję kosztu}.
+		\begin{equation*}
+			C = KL(P||Q).
+		\end{equation*}
+	\end{frame}
+	
+	\begin{frame}{Gradient Funkcji Kosztu}
+		Spróbujemy zobaczyć jak zmienia się błąd, przy przesunięciu jednego punktu w niskowymiarowej mapie -- $\pdv{C}{y_i}$.
+		\begin{equation*}
+			C = \sum_{i}\sum_{j\neq i} p_{ij} \log(\frac{p_{ij}}{q_{ij}}) = \underbrace{\sum_{i}\sum_{j\neq i} p_{ij} \log(p_{ij})}_{\const} - \sum_{i}\sum_{j\neq i} p_{ij}\log(q_{ij})
+		\end{equation*}
+		
+		Dodatkowo wprowadzimy oznacznia
+		\begin{equation*}
+			w_{ij} = (1 + \|y_i - y_j \|^2)^{-1}, \qquad Z = \sum_{k}\sum_{l\neq k} w_{kl}, \qquad q_{ij} = \frac{w_{ij}}{Z}
+		\end{equation*}
+		
+		\begin{equation*}
+			C = \const - \sum_{k}\sum_{k\neq l} p_{kl} \log(w_{kl}) + \sum_{k}\sum_{k\neq l} p_{kl} \log(Z)
+		\end{equation*}
+	\end{frame}
+	
+	\begin{frame}{Gradient Funkcji Kosztu}
+		Na początku obliczymy pochodne $w_{ij}$ i $Z$
+		\begin{equation*}
+			\pdv{w_{ij}}{y_i} = -(1+\|y_i - y_j\|^2)^{-2} \pdv{(\|y_i - y_j\|^2)}{y_i} = -2 w_{ij}^2 (y_i - y_j)
+		\end{equation*}
+		
+		Ponieważ $Z$ jest sumą wszystkich par, $y_i$ pojawia się tylko wtedy, gdy $k=i$ lub $l=i$, a ponieważ $w_{ij} = w_{ji}$, mnożymy wynik przez 2
+		
+		\begin{equation*}
+			\pdv{Z}{y_i} = 2 \sum_{j\neq i} \pdv{w_{ij}}{y_i} = -4\sum_{j\neq i} w_{ij}^2 (y_i - y_j)
+		\end{equation*}
+	\end{frame}
+	
+	\begin{frame}{Gradient Funkcji Kosztu}
+		Teraz możemy różniczkować całą funkcję $C$.
+		\begin{equation*}
+			\pdv{C}{y_i} = -\sum_{k}\sum_{l\neq k} p_{kl}\pdv{\log(w_{kl})}{y_i} + \sum_{k}\sum_{l\neq k} p_{kl}\pdv{\log(Z)}{y_i}
+		\end{equation*}
+		\begin{equation*}
+			\pdv{C}{y_i} = -\underbrace{\sum_{k}\sum_{l\neq k} \frac{p_{kl}}{w_{kl}}\pdv{w_{kl}}{y_i}}_{I_1} +\underbrace{ \sum_{k}\sum_{l\neq k} p_{kl}  \frac{1}{Z} \cdot \pdv{Z}{y_i}}_{I_2}
+		\end{equation*}
+		Pochodna $\pdv{w_{kl}}{y_i}$ jest różna od zera tylko gdy $k=i$ lub $l=i$
+		\begin{equation*}
+			I_1 = 2\sum_{j\neq i} \frac{p_{ij}}{w_{ij}} \pdv{w_{ij}}{y_i} = -4\sum_{j\neq i}p_{ij} w_{ij}(y_i - y_j)
+		\end{equation*}
+	\end{frame}
+	
+	\begin{frame}{Gradient Funkcji Kosztu}
+		Zauważmy, że $Z$ nie zależy od indeksów sumy oraz $\sum_{k, l} p_{kl} = 1$
+		\begin{equation*}
+			I_2 = \sum_{k}\sum_{l\neq k} p_{kl} \frac{1}{Z} \pdv{Z}{y_i} = \frac{1}{Z} \pdv{Z}{y_i} = -4\sum_{j\neq i} q_{ij} w_{ij}(y_i - y_j)
+		\end{equation*}
+		
+		Dzięki temu otrzymujemy
+		\begin{equation*}
+			\pdv{C}{y_i} = -I_1 + I_2 = 4\sum_{j\neq i}(p_{ij} - q_{ij}) w_{ij} (y_i - y_j)
+		\end{equation*}
+		\begin{equation*}
+			\pdv{C}{y_i} = 4\sum_{j\neq i} (p_{ij}-q_{ij})(1+\|y_i - y_j\|^2)^{-1}(y_i - y_j)
+		\end{equation*}
+	\end{frame}
+	
+	\begin{frame}{Cały Algorytm}
+		\begin{center}
+			\Large \textbf{Algorytm}
+		\end{center}
+		
+		\textbf{Dane:} wielowymiarowy zbiór $\mathcal{X} = \{x_1, x_2, \ldots, x_n\}$;\\
+		\textbf{Parametry:} \textit{Perplexity}; ilość kroków $T$; moment pędu $\alpha(t)$; szybkość uczenia $\eta$;\\
+		\textbf{Rezultat:} niskowymiarowa mapa $\mathcal{Y}^{(t)} = \{y_1, y_2, \ldots, y_n\}$ ;
+		
+		\begin{algorithm}[H]
+			\SetKwProg{BeginBlock}{Początek}{}{Koniec}
+			
+			\BeginBlock{}{
+				Oblicz prawdopodobieństwa $p_{j|i}$, z ustaloną wartością \emph{perplexity}\\
+				Ustal $p_{ij} = \frac{p_{j|i} + p_{i|j}}{2n}$\\
+				Wybierz stan początkowy $\mathcal{Y}^{(0)}$ z $\mathcal{N}(0, 10^{-4}I)$
+				
+				\For{$t=1$ \textnormal{\textbf{to}} $T$}{
+					Oblicz niskowymiarowe prawdopodobieństwa $q_{ij}$\;
+					Oblicz Gradient $\frac{\partial C}{\partial \mathcal{Y}}$\;
+					Ustal $\mathcal{Y}^{(t)} = \mathcal{Y}^{(t-1)} + \eta \frac{\partial C}{\partial \mathcal{Y}} + \alpha(t) \left( \mathcal{Y}^{(t-1)} - \mathcal{Y}^{(t-2)} \right)$\;
+				}
+			}
+		\end{algorithm}
+		
+	\end{frame}
+\end{document}
