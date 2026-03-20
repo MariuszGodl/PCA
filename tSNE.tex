@@ -45,7 +45,7 @@
 		
 		\begin{definition}{Prawdopodobieństwo $p_{j|i}$ ($x_i$ wybierający punkt $x_j$ jako sąsiada}
 			\begin{equation*}
-				p_{j|i} = \frac{\exp(-\|x_i - x_j\|^2 / 2\sigma_i^2)}{\sum_{k\neq i} \exp(-\|x_i - x_k\|^2 / 2\sigma_i^2)}
+				p_{j|i} = \frac{e^{(-\|x_i - x_j\|^2 / 2\sigma_i^2)}}{\sum_{k\neq i} e^{(-\|x_i - x_k\|^2 / 2\sigma_i^2)}}
 			\end{equation*}
 			
 			Ustalamy $\forall_{i}\quad p_{i|i} = 0$.
@@ -85,8 +85,7 @@
 	\end{frame}
 	
 	\begin{frame}{Czym jest $\sigma_i$?}
-		Wariancja $\sigma_i^2 $, zależy od podanej wartości 
-		(Perp -- perplexity to parametr i dla każdego $x_i$ szukamy takiej $\sigma_i$, żeby)
+		Wariancja $\sigma_i^2 $, zależy od podanej wartości parametru -- \emph{perplexity}. Na jej podstawie (dla każdego punktu $x_i$ osobno) szukamy takiej wartości, aby
 		
 		\begin{equation*}
 			Perp(P_i) = 2^{H(P_i)}
@@ -98,7 +97,7 @@
 			\end{equation*}
 		\end{definition}
 		
-		Perplexity -- parametr. Można go (luźno) interpretować jako liczbę ,,ważnych'' sąsiadów.
+		\emph{Perplexity} -- parametr. Można go (luźno) interpretować jako liczbę ,,ważnych'' sąsiadów.
 	\end{frame}
 	
 	\begin{frame}{Mierzenie Podobieństwa Rozkładów}
@@ -133,7 +132,7 @@
 	\begin{frame}{Gradient Funkcji Kosztu}
 		Na początku obliczymy pochodne $w_{ij}$ i $Z$
 		\begin{equation*}
-			\pdv{w_{ij}}{y_i} = -(1+\|y_i - y_j\|^2)^{-2} \pdv{(\|y_i - y_j\|^2)}{y_i} = -2 w_{ij}^2 (y_i - y_j)
+			\pdv{w_{ij}}{y_i} = -(1+\|y_i - y_j\|^2)^{-2} \cdot \pdv{(\|y_i - y_j\|^2)}{y_i} = -2 w_{ij}^2 (y_i - y_j)
 		\end{equation*}
 		
 		Ponieważ $Z$ jest sumą wszystkich par, $y_i$ pojawia się tylko wtedy, gdy $k=i$ lub $l=i$, a ponieważ $w_{ij} = w_{ji}$, mnożymy wynik przez 2

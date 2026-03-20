@@ -7,7 +7,8 @@
 \usepackage{physics}
 
 \DeclareMathOperator{\cov}{cov}
-%\DeclareMathOperator{\var}{var}
+\let\var\relax
+\DeclareMathOperator{\var}{var}
 
 \title{Principal Component Analysis - PCA}
 \author{Mariusz Godlewski, Piotr Kędzierski}
@@ -31,7 +32,6 @@
 			\text{Macierz A transponowana: } \quad A^T \\
 			\text{Iloczyn skalarny/wewnętrzny: } \quad x \cdot y = \langle x, y \rangle = x^Ty \\
 			\text{Długość/norma wektora: } \quad \| x \| \\
-			\text{Supremum po zmiennej a, w zbiorze/rodzinie X: } \quad \sup_aX \\
 			\text{Kowariancja zmiennych X i Y: } \quad \cov(X, Y)\\
 			\text{Wariancja zmiennej X: } \quad \var(X) = \cov(X, X)
 		\end{gather*}
@@ -57,14 +57,14 @@
 		
 	\end{frame}
 	
-	\begin{frame}{Wizulalizacja głównych składowych w 2D}
+	\begin{frame}{Wizulalizacja Głównych Składowych w 2D}
 		\begin{figure}
 			\centerline{\includegraphics[width=0.7\textwidth]{img/pca_vectors_2d.png}}
 			\vspace{30mm}
 		\end{figure}
 	\end{frame}
 	
-	\begin{frame}{Rzut prostokątny}
+	\begin{frame}{Rzut Prostokątny}
 		\begin{figure}
 			\centerline{\includegraphics[width=0.6\textwidth]{img/PCArzut.png}}
 			\vspace{-15mm}
@@ -78,7 +78,7 @@
 		\end{equation*}
 	\end{frame}
 	
-	\begin{frame}{Konstrukcja macierzy kowariancji 1}
+	\begin{frame}{Konstrukcja Macierzy Kowariancji}
 		\begin{equation*}
 			\text{Wzór na kowariancję: } \cov(X, Y) = \frac{1}{n} \sum_{i=1}^{n}(x_i - \bar{x})(y_i - \bar{y})
 		\end{equation*}
@@ -90,7 +90,7 @@
 		Gdzie elemnt $x_{ij}$ jest i-tą obserwacją j-tej zmiennej
 	\end{frame}
 	
-	\begin{frame}{Konstrukcja macierzy kowariancji 2}
+	\begin{frame}{Konstrukcja Macierzy Kowariancji}
 		Przyjrzyjmy się teraz macierzy
 		\begin{equation*}
 			M = \mathbb{X}^T \mathbb{X}
@@ -106,85 +106,41 @@
 		
 	\end{frame}
 	
-	\begin{frame}{Nasz Cel}
+	\begin{frame}{Cel i Założenia}
+		\textbf{Założenia:}\\
+		Zbiór danych jest: 
+		\begin{enumerate}
+			\item wyśrodkowany: $\overline{X_i}=0$
+			\item znormalizowany: wartości mieszczą się w przedziale [0, 1]
+		\end{enumerate}\vspace{20pt}
 		
-		Naszym zadaniem będzie znalezienie takiego wektora $w$, który zmaksymalizuje wariancję, gdy rzutujemy na niego punkty $X_i$. Przy tym założymy, że dane są znormalizowane (wszystkie cechy mieszczą się w przedziale $[0,1]$) i mają średnią $\overline{X_i} = 0$.\vspace{20pt}
-		
-		Dodatkowo, ustalimy długość wektora $\|w\| = 1$, żeby ona sama w sobie nie wpływała na otrzymywaną wariancję.
+		\textbf{Cel: }znalezienie wektora $\|w\|=1$, który maksymalizuje wariancję.
 	\end{frame}
 	
-	\begin{frame}{Obliczanie Wariancji 1}
+	\begin{frame}{Obliczanie Wariancji}
+		Niech $Z = [z_1, z_2, \ldots, z_n]^T$, będzie rzutem ortogonalnym danych na wektor $w$. Wtedy
+		
 		\begin{equation*}
-			\text{wariancja}= \sigma^2 = \frac{1}{n}\sum_{i=1}^{n}(z_i)^2 = \frac{1}{n}\sum_{i=1}^{n}(X_i^T w)^2 = \frac{1}{n} (\mathbb{X}w)^T\mathbb{X}w 
+			\var(Z) = \frac{1}{n}\sum_{i=1}^{n}(z_i)^2 = \frac{1}{n}\sum_{i=1}^{n}(X_i^T w)^2 = \frac{1}{n} (\mathbb{X}w)^T\mathbb{X}w 
 		\end{equation*}
 		\begin{equation*}
 			= w^T\left( \frac{1}{n} \mathbb{X}^T \mathbb{X} \right) w = w^T S {}w
 			\vspace{2.5mm}
 		\end{equation*}
 		
-		$S$ jest macierzą kowariancji. Jest ona symetryczna, dlatego
-		
-		\begin{equation*}
-			\forall_{i\in\{1,\ldots, d\}} i\neq j \implies v_i\perp v_j, \quad \quad \|v_i\| = 1
-		\end{equation*}
-		\begin{equation*}
-			\lambda_1 \geq \lambda_2 \geq \ldots \geq \lambda_d, \quad\quad \lambda_i \in \mathbb{R}
-		\end{equation*}
-		
-		Gdzie $v_i$ są wektorami własnymi $S$, a $\lambda_i$ odpowiadającymi im wartościami własnymi.
 	\end{frame}
 
-	\begin{frame}{Obliczanie Wariancji 2}
-		Wektory $v_i$ tworzą przestrzeń ortonormalną, dlatego możemy zapisać wektor $w$ jako kombinację liniową:
-		\begin{equation*}
-			w = \sum_{i=1}^{d}c_i v_i
-		\end{equation*}
-		Korzystając z warunku długości wektora $w$, możemy ograniczyć wartości współczynników $c_i$
-		\begin{equation*}
-			\|w\| = 1 \implies \left( \sum_{i=1}^{d}c_i v_i\right)^T \sum_{i=1}^{d}c_i v_i = 1 \implies \sum_{i=1}^{d}c_i^2 = 1
-		\end{equation*}
-	\end{frame}
 	
-	\begin{frame}{Obliczanie Wariancji 3}
-		Podstawiamy nowy wzór na $\mathbf{w}$, pamiętając, że wektory własne spełniają równanie $S{}v = \lambda{}v$.
+	\begin{frame}{Optymalizacja z Użyciem Mnożników Lagrange'a}
+		Naszym celem jest zmaksymalizowanie wariancji, $\var(Z) = w^TSw$, z ograniczeniem $\|w\| = 1 \implies w^Tw = 1$.
 		\begin{equation*}
-			S{}w = S\left( \sum_{i=1}^{d}c_i v_i\right)  =  \sum_{i=1}^{d}\lambda_i c_i v_i
-		\end{equation*}
-		\begin{equation*}
-			w^T S{}w = \left( \sum_{i=1}^{d}c_i v_i\right)^T \left( \sum_{i=1}^{d}\lambda_i c_i v_i\right) = \sum_{i=1}^{d}\lambda_i c_i^2
-		\end{equation*}
-		Co daje nam nowy wzór na wariancję:
-		\begin{equation*}
-			\sigma^2 = \sum_{i=1}^{d}\lambda_i c_i^2
-		\end{equation*}
-	\end{frame}
-	
-	\begin{frame}{Maksymalizacja Wariancji}
-		Przypomnijmy sobie, że naszym celem jest znalezienie takiego wektora $w$, który zmaksymalizuje wariancję, dlatego
-		\begin{equation*}
-			\sup\sigma^2 = \sup_{c_i} \sum_{i=1}^{d}\lambda_i c_i^2 = \max \{ \lambda_i;\quad i\in\{1, 2, \ldots, d\} \}
-		\end{equation*}
-		Z tego wynika, że   $c_i = 1 $, gdy  $\lambda_i = \max\{\lambda\}$, w przeciwny razie $c_i = 0$.\vspace{2.5mm}
-		Dzięki temu, wnioskujemy, że wektor $w$ maksymalizujący wariancję, jest wektorem własnym macierzy $S$, odpowiadającym największej wartości własnej.
-		\begin{equation*}
-			w = v_1 \quad\text{ oraz }\quad \sigma^2=\lambda_1
-		\end{equation*}
-	\end{frame}
-	
-	\begin{frame}
-		\Huge Alternatywne wyprowadzenie --- mnożniki Lagrange'a
-	\end{frame}
-	
-	\begin{frame}{Optymalizacja}
-		Naszym celem jest zmaksymalizowanie wariancji, zapisanej jako $\sigma^2 = w^TSw$, gdzie $\|w\|^2 = w^Tw = 1$.
-		\begin{equation*}
-			\pdv{(w^TSw)}{w} = \lambda \pdv{(w^Tw)}{w}
+			\pdv{(w^TSw)}{w} = \lambda \pdv{(w^Tw - 1)}{w}
 		\end{equation*}
 		\begin{equation*}
 			2Sw = 2\lambda w \implies Sw=\lambda w
 		\end{equation*}
 		
-		Z tego wnioskujemy, że wektor maksymalizujący wariancję, jest wektorem własnym macierzy $S$. Pondato
+		Czyli $w$, jest wektorem własnym macierzy $S$. Pondato
 		\begin{equation*}
 			w^TSw = w^T\lambda w = \lambda
 		\end{equation*}
