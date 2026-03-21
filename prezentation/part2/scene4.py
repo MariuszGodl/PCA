@@ -5,7 +5,15 @@ import numpy as np
 
 class Final2_4(Slide):
     def construct(self):
+        title = Text("UMAP", font_size=72, weight=BOLD)
+        subtitle = Text("Uniform Manifold Approximation and Projection", font_size=36, color=LIGHT_GREY)
+        title_group = VGroup(title, subtitle).arrange(DOWN)
 
+        self.play(FadeIn(title_group, shift=UP))
+
+        self.next_slide() 
+
+        self.play(FadeOut(title_group, shift=UP))
         central_dot = Dot(ORIGIN, color=WHITE, radius=0.1)
 
         dot1 = Dot(np.array([0.6, 0.8, 0]), color=BLUE, radius=0.1)
