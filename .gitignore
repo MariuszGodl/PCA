@@ -6,3 +6,5 @@
 *.nav
 *.snm
 *.toc
+.env
+.venv
