@@ -78,7 +78,6 @@ class Final2_5(Slide, VoiceoverScene):
         )
 
         self.play(FadeIn(dots))
-        self.next_slide()
 
         time = Tex("Only 5 seconds ! ").scale(1.8).set_z_index(1)
         rect_bg = BackgroundRectangle(

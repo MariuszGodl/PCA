@@ -148,10 +148,10 @@ class Final2_4(Slide):
 
         txt = Tex("How do we compute these graphs ?")
         self.play(Write(txt))
-        self.play(FadeOut(txt), run_time=1)
-        self.clear()
 
         self.next_slide()
+        self.play(FadeOut(txt), run_time=1)
+        self.clear()
 
         txt = Tex("k-nearest neighbors").scale(1.5).to_edge(UP, buff=0.5)
         self.play(Write(txt))
