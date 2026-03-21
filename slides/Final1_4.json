@@ -1,0 +1,69 @@
+{
+  "slides": [
+    {
+      "loop": false,
+      "auto_next": false,
+      "playback_rate": 1.0,
+      "reversed_playback_rate": 1.0,
+      "notes": "",
+      "dedent_notes": true,
+      "skip_animations": false,
+      "src": null,
+      "file": "slides/files/Final1_4/4d1f4fe322dac8db5653ccb6357149cf42afdd0e1c296e9d3ce044b6c1989bab.mp4",
+      "rev_file": "slides/files/Final1_4/4d1f4fe322dac8db5653ccb6357149cf42afdd0e1c296e9d3ce044b6c1989bab_reversed.mp4"
+    },
+    {
+      "loop": false,
+      "auto_next": false,
+      "playback_rate": 1.0,
+      "reversed_playback_rate": 1.0,
+      "notes": "",
+      "dedent_notes": true,
+      "skip_animations": false,
+      "src": null,
+      "file": "slides/files/Final1_4/64f51be31920265fe361831faa964990208b7f07c0504c595c99aa2c2a2bb423.mp4",
+      "rev_file": "slides/files/Final1_4/64f51be31920265fe361831faa964990208b7f07c0504c595c99aa2c2a2bb423_reversed.mp4"
+    },
+    {
+      "loop": false,
+      "auto_next": false,
+      "playback_rate": 1.0,
+      "reversed_playback_rate": 1.0,
+      "notes": "",
+      "dedent_notes": true,
+      "skip_animations": false,
+      "src": null,
+      "file": "slides/files/Final1_4/05ef9f45e72bbec1d70811c9b0a77754c263f73992c36dd3154103435bddb2a3.mp4",
+      "rev_file": "slides/files/Final1_4/05ef9f45e72bbec1d70811c9b0a77754c263f73992c36dd3154103435bddb2a3_reversed.mp4"
+    },
+    {
+      "loop": false,
+      "auto_next": false,
+      "playback_rate": 1.0,
+      "reversed_playback_rate": 1.0,
+      "notes": "",
+      "dedent_notes": true,
+      "skip_animations": false,
+      "src": null,
+      "file": "slides/files/Final1_4/6effd98ed053827332a4099693d91b6ef661cfec5f4710095d8c30c7d70990f2.mp4",
+      "rev_file": "slides/files/Final1_4/6effd98ed053827332a4099693d91b6ef661cfec5f4710095d8c30c7d70990f2_reversed.mp4"
+    },
+    {
+      "loop": false,
+      "auto_next": false,
+      "playback_rate": 1.0,
+      "reversed_playback_rate": 1.0,
+      "notes": "",
+      "dedent_notes": true,
+      "skip_animations": false,
+      "src": null,
+      "file": "slides/files/Final1_4/8cf348c6c9bcba60fc74c75b1df80e9b208abd5b04d11d612dbfbe74ec05e50b.mp4",
+      "rev_file": "slides/files/Final1_4/8cf348c6c9bcba60fc74c75b1df80e9b208abd5b04d11d612dbfbe74ec05e50b_reversed.mp4"
+    }
+  ],
+  "resolution": [
+    1920,
+    1080
+  ],
+  "background_color": "black"
+}
