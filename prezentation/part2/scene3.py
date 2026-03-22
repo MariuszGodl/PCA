@@ -446,19 +446,19 @@ class Final2_3(Slide):
         data_txt = Tex(
             r"\textbf{Dane:} wielowymiarowy zbiór $\mathcal{X} = \{x_1, x_2, \ldots, x_n\}$", 
             tex_template=my_template, 
-            font_size=18
+            font_size=28
         ).to_edge(LEFT).shift(UP*2.5 + RIGHT*0.5)
         
         params_txt = Tex(
             r"\textbf{Parametry:} \textit{Perplexity}; ilość kroków $T$; \\ moment pędu $\alpha(t)$; szybkość uczenia $\eta$", 
             tex_template=my_template, 
-            font_size=18
+            font_size=28
         ).next_to(data_txt, DOWN, aligned_edge=LEFT, buff=0.15)
         
         res_txt = Tex(
             r"\textbf{Rezultat:} niskowymiarowa mapa $\mathcal{Y}^{(t)} = \{y_1, y_2, \ldots, y_n\}$", 
             tex_template=my_template, 
-            font_size=18
+            font_size=28
         ).next_to(params_txt, DOWN, aligned_edge=LEFT, buff=0.15)
 
         self.play(Write(data_txt))
@@ -466,13 +466,13 @@ class Final2_3(Slide):
         self.play(Write(res_txt))
 
         algo_lines = VGroup(
-            Tex(r"1. Oblicz prawdopodobieństwa $p_{j|i}$, z ustaloną wartością \emph{perplexity}", tex_template=my_template, font_size=22),
-            Tex(r"2. Ustal $p_{ij} = \frac{p_{j|i} + p_{i|j}}{2n}$", tex_template=my_template, font_size=22),
-            Tex(r"3. Wybierz stan początkowy $\mathcal{Y}^{(0)}$ z $\mathcal{N}(0, 10^{-4}I)$", tex_template=my_template, font_size=22),
-            Tex(r"4. \textbf{for} $t=1$ \textbf{to} $T$ \textbf{do}", tex_template=my_template, font_size=22),
-            Tex(r"Oblicz niskowymiarowe prawdopodobieństwa $q_{ij}$", tex_template=my_template, font_size=22),
-            Tex(r"Oblicz Gradient $\frac{\partial C}{\partial \mathcal{Y}}$", tex_template=my_template, font_size=22),
-            Tex(r"Ustal $\mathcal{Y}^{(t)} = \mathcal{Y}^{(t-1)} + \eta \frac{\partial C}{\partial \mathcal{Y}} + \alpha(t) \left( \mathcal{Y}^{(t-1)} - \mathcal{Y}^{(t-2)} \right)$", tex_template=my_template, font_size=18),
+            Tex(r"1. Oblicz prawdopodobieństwa $p_{j|i}$, z ustaloną wartością \emph{perplexity}", tex_template=my_template, font_size=28),
+            Tex(r"2. Ustal $p_{ij} = \frac{p_{j|i} + p_{i|j}}{2n}$", tex_template=my_template, font_size=28),
+            Tex(r"3. Wybierz stan początkowy $\mathcal{Y}^{(0)}$ z $\mathcal{N}(0, 10^{-4}I)$", tex_template=my_template, font_size=28),
+            Tex(r"4. \textbf{for} $t=1$ \textbf{to} $T$ \textbf{do}", tex_template=my_template, font_size=28),
+            Tex(r"Oblicz niskowymiarowe prawdopodobieństwa $q_{ij}$", tex_template=my_template, font_size=28),
+            Tex(r"Oblicz Gradient $\frac{\partial C}{\partial \mathcal{Y}}$", tex_template=my_template, font_size=28),
+            Tex(r"Ustal $\mathcal{Y}^{(t)} = \mathcal{Y}^{(t-1)} + \eta \frac{\partial C}{\partial \mathcal{Y}} + \alpha(t) \left( \mathcal{Y}^{(t-1)} - \mathcal{Y}^{(t-2)} \right)$", tex_template=my_template, font_size=28),
         ).arrange(DOWN, aligned_edge=LEFT, buff=0.15).next_to(res_txt, DOWN, aligned_edge=LEFT, buff=0.3).shift(RIGHT*0.5)
 
         for i in range(4, 7):

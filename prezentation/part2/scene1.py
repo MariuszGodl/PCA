@@ -103,7 +103,7 @@ class Final2_1(Slide):
         ).next_to(title, DOWN)
 
         eq = MathTex(
-            r"q_{ij} = \frac{(1+\|y_i-y_j\|^2)^{-1}}{\sum_{k\neq l}(1+\|y_k-y_l\|^2)^{-1}}",
+            r"q_{ij} = \frac{(1 + \|y_i - y_j\|^2)^{-1}}{\sum_{k\neq l} (1 + \|y_k - y_l\|^2)^{-1}}",
             tex_template=my_template
         ).next_to(desc, DOWN)
 
@@ -367,7 +367,7 @@ class Final2_1(Slide):
         self.wait(1)
 
         gaussian_formula1d = MathTex(
-            r"q_{j|i} = \frac{e^{-\|y_i - y_j\|^2}}{\sum_{k \neq i} e^{-\|y_i - y_k\|^2}}",
+            r"q_{ij} = \frac{(1 + \|y_i - y_j\|^2)^{-1}}{\sum_{k\neq l} (1 + \|y_k - y_l\|^2)^{-1}}",
             tex_template=my_template
         ).to_corner(UR, buff=1.0)
 
@@ -414,16 +414,16 @@ class Final2_1(Slide):
         self.next_slide()
         self.clear()
 
-        scatter_plot1d.scale(1.3).move_to(2 * DOWN + 3 * LEFT)
-        gaussian_formula1d.move_to(2 * UP + 3 * LEFT)
+        scatter_plot1d.scale(1.3).move_to(2 * DOWN + 3.5 * LEFT)
+        gaussian_formula1d.move_to(2 * UP + 3.5 * LEFT)
 
         scatter_plot.remove(arrows)
-        scatter_plot.move_to(DOWN + 3 * RIGHT)
+        scatter_plot.move_to(DOWN + 3.5 * RIGHT)
 
         gaussian_formula2d_final = MathTex(
             r"p_{j|i} = \frac{e^{-\|x_i - x_j\|^2 / 2\sigma_i^2}}{\sum_{k\neq i} e^{-\|x_i - x_k\|^2 / 2\sigma_i^2}}",
             tex_template=my_template
-        ).move_to(2 * UP + 3 * RIGHT)
+        ).move_to(2 * UP + 3.5 * RIGHT)
 
         self.play(
             FadeIn(scatter_plot1d, gaussian_formula1d, scatter_plot, gaussian_formula2d_final)
