@@ -16,9 +16,9 @@ class Final2_3(Slide):
         # ==========================================
         # SLIDE 1: KL formula
         # ==========================================
-        title = Text("Mierzenie Podobieństwa Rozkładów", font_size=40, color=BLUE).to_edge(UP)
+        title = Text("Rozbieżność Kullbacka-Leiblera", font_size=40, color=BLUE).to_edge(UP)
 
-        desc_kl1 = Tex("Jest to metoda mierzenia rozbieżności dwóch rozkładów prawdopodobieństwa:", tex_template=my_template, font_size=32)
+        desc_kl1 = Tex("Jest to metoda mierzenia rozbieżności/podobieństwa dwóch rozkładów prawdopodobieństwa:", tex_template=my_template, font_size=32)
         eq = MathTex(
             r"KL(P||Q) = \sum_{i}\sum_{j} p_{ij} \log\left(\frac{p_{ij}}{q_{ij}}\right).",
             tex_template=my_template

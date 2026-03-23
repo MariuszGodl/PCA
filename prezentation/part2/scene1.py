@@ -269,12 +269,54 @@ class Final2_1(Slide):
         self.play(Transform(gaussian_curve, gaussian_curve_narrow), run_time=2)
 
         self.play(FadeOut(rect, label_increase), run_time=0.6)
-        self.wait(0.7)
-        # ==========================================================
-        # Slide 8: Low dimension space with random points
-        # ==========================================================
         self.next_slide()
         self.clear()
+        # ==========================================================
+        # Slide 8: Sigma explenation
+        # ==========================================================
+        title = Tex(r"Czym jest $\sigma_i$?", font_size=40, color=BLUE, tex_template=my_template).to_edge(UP)
+
+        desc = Tex(
+            r"Wariancja $\sigma_i^2$ zależy od podanej wartości parametru -- \emph{perplexity}.\\",
+            r"Na jej podstawie (dla każdego $x_i$ osobno) szukamy takiej wartości, aby:",
+            font_size=30,  # Adjust this value to make the text smaller/larger
+            tex_template=my_template
+        ).next_to(title, DOWN)
+
+        eq_perplexity = MathTex(
+            r"Perp(P_i) = 2^{H(P_i)}",
+            font_size=36,  # Slightly larger for the equation
+            tex_template=my_template
+        ).next_to(desc, DOWN)
+
+        eq_entropy = MathTex(
+            r"H(P_i) = -\sum_{j} p_{j|i} \log_2(p_{j|i})",
+            font_size=37,
+            tex_template=my_template
+        ).next_to(eq_perplexity, DOWN)
+
+        note = Tex(
+            r"\emph{Perplexity} to parametr, który można (luźno) interpretować \\",
+            r"jako liczbę ,,ważnych'' sąsiadów.",
+            font_size=30,
+            tex_template=my_template
+        ).next_to(eq_entropy, DOWN)
+
+        self.play(Write(title))
+        self.play(Write(desc))
+        
+        self.next_slide()
+        
+        self.play(Write(eq_perplexity))
+        self.play(Write(eq_entropy))
+        self.play(Write(note))
+
+        self.next_slide()
+        self.clear()
+        # ==========================================================
+        # Slide 9: Low dimension space with random points
+        # ==========================================================
+
 
         nb_line = NumberLine(
             x_range=[-2, 2, 1],
@@ -375,7 +417,7 @@ class Final2_1(Slide):
         self.wait()
 
         # ==========================================================
-        # Slide 9: Gaussian vs t-Student
+        # Slide 10: Gaussian vs t-Student
         # ==========================================================
         self.next_slide()
         self.clear()
@@ -409,7 +451,7 @@ class Final2_1(Slide):
         self.play(Create(tail_rect1), Create(tail_rect2))
         self.wait(2)
         # ==========================================================
-        # Slide 10: Display the two probability distributions
+        # Slide 11: Display the two probability distributions
         # ==========================================================
         self.next_slide()
         self.clear()
